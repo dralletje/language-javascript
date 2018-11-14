@@ -41,6 +41,15 @@ folds: [
     start: {index: 0, type: '('}
     end: {index: -1, type: ')'}
   }
+  {
+    type: 'switch_case'
+    start: {index: 0}
+    end: {type: 'break_statement', index: -1}
+  }
+  {
+    type: 'switch_case'
+    start: {index: 0}
+  }
 ]
 
 comments:
@@ -73,6 +82,7 @@ scopes:
   '
     jsx_opening_element > identifier,
     jsx_closing_element > identifier,
+    jsx_self_closing_element > identifier,
     call_expression > identifier
   ': [
     {
@@ -89,7 +99,7 @@ scopes:
   #   'entity.name.function'
   # ]
 
-  'call_expression > super': 'support.function'
+  'call_expression > super': 'support.function.super'
 
   'method_definition > property_identifier': 'entity.name.function.dral-symbol'
   # 'call_expression > member_expression > property_identifier': 'entity.name.function'
@@ -102,8 +112,9 @@ scopes:
       scopes: 'support.variable'
     },
     {
-      exact: 'require', scopes: 'support.function'
-    }
+      exact: 'require',
+      scopes: 'support.function'
+    },
     {
       match: '^[\$A-Z_]{2,}$',
       scopes: 'constant.other'
@@ -139,9 +150,9 @@ scopes:
   '")"': 'punctuation.definition.parameters.end.bracket.round'
   '"{"': 'punctuation.definition.function.body.begin.bracket.curly'
   '"}"': 'punctuation.definition.function.body.end.bracket.curly'
-  '"["': 'punctuation'
-  '"]"': 'punctuation'
-  '";"': 'punctuation'
+  '"["': 'punctuation.definition.array.begin.bracket.square'
+  '"]"': 'punctuation.definition.array.end.bracket.square'
+  '";"': 'punctuation.terminator.statement.semicolon'
   '"\'"': 'punctuation'
   '"\\""': 'punctuation'
   "'\"'": 'punctuation'
@@ -153,7 +164,7 @@ scopes:
   '"const"': 'storage.modifier'
   '"static"': 'storage.modifier'
   '"function"': 'storage.type.function'
-  '"=>"': 'punctuation'
+  '"=>"': 'storage.type.function.arrow.punctuation'
 
   '"="': 'dral-important.js'
   '"+="': 'keyword.operator.js'
@@ -205,9 +216,10 @@ scopes:
   '"get"': 'keyword.operator.setter'
   '"set"': 'keyword.operator.setter'
 
-  '"."': 'meta.delimiter'
-  '","': 'meta.delimiter'
+  '"."': 'meta.delimiter.period'
+  '","': 'meta.delimiter.comma'
 
+  '"as"': 'keyword.control'
   '"if"': 'keyword.control'
   '"do"': 'keyword.control'
   '"else"': 'keyword.control'
