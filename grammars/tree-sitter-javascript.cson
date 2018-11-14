@@ -81,18 +81,20 @@ scopes:
     },
   ]
 
-  'function > identifier': 'entity.name.function'
-  'generator_function > identifier': 'entity.name.function'
+  # 'function > identifier': 'entity.name.function'
+  # 'generator_function > identifier': 'entity.name.function'
 
-  'call_expression > identifier': [
-    {match: '^require$', scopes: 'support.function'},
-    'entity.name.function'
-  ]
+  # 'call_expression > identifier': [
+  #   {match: '^require$', scopes: 'support.function'},
+  #   'entity.name.function'
+  # ]
 
   'call_expression > super': 'support.function'
 
-  'method_definition > property_identifier': 'entity.name.function'
-  'call_expression > member_expression > property_identifier': 'entity.name.function'
+  'method_definition > property_identifier': 'entity.name.function.dral-symbol'
+  # 'call_expression > member_expression > property_identifier': 'entity.name.function'
+
+
 
   'identifier': [
     {
@@ -110,6 +112,7 @@ scopes:
       match: '^[A-Z]',
       scopes: 'meta.class'
     },
+    'variable',
   ]
 
   'number': 'constant.numeric'
@@ -136,6 +139,12 @@ scopes:
   '")"': 'punctuation.definition.parameters.end.bracket.round'
   '"{"': 'punctuation.definition.function.body.begin.bracket.curly'
   '"}"': 'punctuation.definition.function.body.end.bracket.curly'
+  '"["': 'punctuation'
+  '"]"': 'punctuation'
+  '";"': 'punctuation'
+  '"\'"': 'punctuation'
+  '"\\""': 'punctuation'
+  "'\"'": 'punctuation'
 
   '"var"': 'storage.type'
   '"let"': 'storage.type'
@@ -144,9 +153,9 @@ scopes:
   '"const"': 'storage.modifier'
   '"static"': 'storage.modifier'
   '"function"': 'storage.type.function'
-  '"=>"': 'storage.type.function'
+  '"=>"': 'punctuation'
 
-  '"="': 'keyword.operator.js'
+  '"="': 'dral-important.js'
   '"+="': 'keyword.operator.js'
   '"-="': 'keyword.operator.js'
   '"*="': 'keyword.operator.js'
@@ -223,7 +232,29 @@ scopes:
   '"debugger"': 'keyword.control'
   '"delete"': 'keyword.control'
 
-  'jsx_attribute > property_identifier': 'entity.other.attribute-name'
-  'jsx_opening_element > identifier': 'entity.name.tag'
-  'jsx_closing_element > identifier': 'entity.name.tag'
-  'jsx_self_closing_element > identifier': 'entity.name.tag'
+  'jsx_attribute > property_identifier': 'entity.other.attribute.dral-symbol'
+  'jsx_attribute > "="': 'punctuation'
+  'jsx_opening_element > identifier': [
+    {
+      match: /^[a-z]+$/,
+      scopes: 'entity.name.tag.dral-symbol.lowercase',
+    },
+    # 'entity.name.tag',
+  ]
+  'jsx_closing_element > identifier': [
+    # 'entity.name.tag',
+    {
+      match: /^[a-z]+$/,
+      scopes: 'entity.name.tag.dral-symbol.lowercase',
+    },
+  ]
+  'jsx_self_closing_element > identifier': [
+    # 'entity.name.tag',
+    {
+      match: /^[a-z]+$/,
+      scopes: 'entity.name.tag.dral-symbol.lowercase',
+    },
+  ]
+  'jsx_text': 'dral-value'
+
+  '"console"': 'dral-symbol'
