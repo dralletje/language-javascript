@@ -58,38 +58,24 @@ comments:
 scopes:
   'program': 'source.js'
 
-  'property_identifier': [
-    {
-      match: '^[\$A-Z_]+$',
-      scopes: 'constant.other.property.js'
-    }
+  'property_identifier': 'variable.other.object.property'
+  'pair > string:nth-child(0)': 'property'
 
-    'variable.other.object.property'
-  ]
-
-  'shorthand_property_identifier': [
-    {
-      match: '^[\$A-Z_]{2,}$',
-      scopes: 'constant.other'
-    }
-  ]
-
-  '
-    class > identifier,
-    new_expression > call_expression > identifier
-  ': 'meta.class'
-
-  '
-    jsx_opening_element > identifier,
-    jsx_closing_element > identifier,
-    jsx_self_closing_element > identifier,
-    call_expression > identifier
-  ': [
-    {
-      match: '^[A-Z]',
-      scopes: 'meta.class'
-    },
-  ]
+  # '
+  #   class > identifier,
+  #   new_expression > call_expression > identifier
+  # ': 'meta.class'
+  # '
+  #   jsx_opening_element > identifier,
+  #   jsx_closing_element > identifier,
+  #   jsx_self_closing_element > identifier,
+  #   call_expression > identifier
+  # ': [
+  #   {
+  #     match: '^[A-Z]',
+  #     scopes: 'meta.class'
+  #   },
+  # ]
 
   # 'function > identifier': 'entity.name.function'
   # 'generator_function > identifier': 'entity.name.function'
@@ -99,31 +85,26 @@ scopes:
   #   'entity.name.function'
   # ]
 
-  'call_expression > super': 'support.function.super'
+  # 'call_expression > super': 'support.function.super'
 
   'method_definition > property_identifier': 'entity.name.function.dral-symbol'
   # 'call_expression > member_expression > property_identifier': 'entity.name.function'
 
-
-
-  'identifier': [
+  'this': 'builtin'
+  '
+    member_expression,
+    identifier,
+    super,
+    nested_identifier
+  ': [
     {
-      match: '^(global|module|exports|__filename|__dirname|window|document)$',
-      scopes: 'support.variable'
+      match: '^(React|super|require|global|module|exports|__filename|__dirname|window|document|console|Array|Object|String|Number|Promise|Error|process|Math)(\.[^.]+$|$)',
+      scopes: 'builtin'
     },
     {
-      exact: 'require',
-      scopes: 'support.function'
-    },
-    {
-      match: '^[\$A-Z_]{2,}$',
-      scopes: 'constant.other'
-    },
-    {
-      match: '^[A-Z]',
-      scopes: 'meta.class'
-    },
-    'variable',
+      match: '^[^.]+$',
+      scopes: 'variable'
+    }
   ]
 
   'number': 'constant.numeric'
@@ -156,6 +137,7 @@ scopes:
   '"\'"': 'punctuation'
   '"\\""': 'punctuation'
   "'\"'": 'punctuation'
+  '"`"': 'punctuation'
 
   '"var"': 'storage.type'
   '"let"': 'storage.type'
@@ -166,7 +148,13 @@ scopes:
   '"function"': 'storage.type.function'
   '"=>"': 'storage.type.function.arrow.punctuation'
 
-  '"="': 'dral-important.js'
+  '"="': 'punctuation'
+  '
+    variable_declarator > "=",
+    assignment_expression > "=",
+    assignment_pattern > "="
+  ': 'dral-important'
+
   '"+="': 'keyword.operator.js'
   '"-="': 'keyword.operator.js'
   '"*="': 'keyword.operator.js'
@@ -178,7 +166,7 @@ scopes:
   '"&="': 'keyword.operator.js'
   '"^="': 'keyword.operator.js'
   '"|="': 'keyword.operator.js'
-  '"!"': 'keyword.operator.js'
+  '"!"': 'dral-important'
   '"+"': 'keyword.operator.js'
   '"-"': 'keyword.operator.js'
   '"*"': 'keyword.operator.js'
@@ -206,6 +194,9 @@ scopes:
   '"++"': 'keyword.operator.js'
   '"--"': 'keyword.operator.js'
   '"..."': 'keyword.operator.js'
+
+  'ternary_expression > "?"': 'dral-important'
+  'ternary_expression > ":win"': 'dral-important'
 
   '"in"': 'keyword.operator.in'
   '"instanceof"': 'keyword.operator.instanceof'
@@ -246,27 +237,28 @@ scopes:
 
   'jsx_attribute > property_identifier': 'entity.other.attribute.dral-symbol'
   'jsx_attribute > "="': 'punctuation'
-  'jsx_opening_element > identifier': [
+  '
+    jsx_opening_element > identifier,
+    jsx_opening_element > nested_identifier > identifier
+  ': [
     {
       match: /^[a-z]+$/,
       scopes: 'entity.name.tag.dral-symbol.lowercase',
     },
-    # 'entity.name.tag',
+    'entity.name.tag',
   ]
   'jsx_closing_element > identifier': [
-    # 'entity.name.tag',
     {
       match: /^[a-z]+$/,
       scopes: 'entity.name.tag.dral-symbol.lowercase',
     },
+    'entity.name.tag',
   ]
   'jsx_self_closing_element > identifier': [
-    # 'entity.name.tag',
     {
       match: /^[a-z]+$/,
       scopes: 'entity.name.tag.dral-symbol.lowercase',
     },
+    'entity.name.tag',
   ]
   'jsx_text': 'dral-value'
-
-  '"console"': 'dral-symbol'
