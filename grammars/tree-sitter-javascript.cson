@@ -5,7 +5,7 @@ parser: 'tree-sitter-javascript'
 
 fileTypes: ['js', 'jsx']
 
-injectionRegex: 'js|javascript'
+injectionRegex: '^js$|^JS$|javascript|JavaScript'
 
 firstLineRegex: [
   # shebang line
@@ -42,12 +42,12 @@ folds: [
     end: {index: -1, type: ')'}
   }
   {
-    type: 'switch_case'
+    type: ['switch_case', 'switch_default']
     start: {index: 0}
     end: {type: 'break_statement', index: -1}
   }
   {
-    type: 'switch_case'
+    type: ['switch_case', 'switch_default']
     start: {index: 0}
   }
 ]
@@ -116,7 +116,13 @@ scopes:
   'null': 'constant.language.null'
   'true': 'constant.language.boolean.true'
   'false': 'constant.language.boolean.false'
-  'comment': 'comment.block'
+  'comment': [
+    {
+      match: "^//",
+      scopes: 'comment.line'
+    },
+    'comment.block'
+  ]
   'hash_bang_line': 'comment.block'
 
   '
@@ -193,7 +199,7 @@ scopes:
   '"|"': 'keyword.operator.js'
   '"++"': 'keyword.operator.js'
   '"--"': 'keyword.operator.js'
-  '"..."': 'keyword.operator.js'
+  '"..."': 'keyword.operator.spread.js'
 
   'ternary_expression > "?"': 'dral-important'
   'ternary_expression > ":win"': 'dral-important'
